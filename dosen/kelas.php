@@ -98,6 +98,7 @@ if (!isset($_SESSION['user'])) {
               <table class="table table-responsive table-striped">
                 <thead>
                   <tr>
+                    <th scope="col">Kode</th>
                     <th scope="col">Matakuliah</th>
                     <th scope="col">Kelas</th>
                     <th scope="col">Jadwal</th>
@@ -111,6 +112,7 @@ if (!isset($_SESSION['user'])) {
                   foreach ($classes as $key => $val) {
                   ?>
                     <tr>
+                      <td><?= $val['subject_id'] ?></td>
                       <td><?= $val['lecture'] ?></td>
                       <td><?= $val['name'] ?></td>
                       <td><?= $val['schedule'] ?></td>

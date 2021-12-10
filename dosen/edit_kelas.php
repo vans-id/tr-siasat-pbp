@@ -91,19 +91,17 @@ if (!isset($_SESSION['user'])) {
       }
 
       if (isset($_POST['edit_class'])) {
-        $selectedClass['subject_id'] = isset($_POST['subject_id']) ? $_POST['subject_id'] : "";
-        $selectedClass['lecturer_id'] = $_SESSION['user'];
-        $selectedClass['name'] = isset($_POST['name']) ? $_POST['name'] : "";
-        $selectedClass['room'] = isset($_POST['room']) ? $_POST['room'] : "";
-        $selectedClass['size'] = isset($_POST['size']) ? $_POST['size'] : "";
-        $selectedClass['day'] = isset($_POST['day']) ? $_POST['day'] : "";
-        $selectedClass['start_time'] = isset($_POST['start_time']) ? $_POST['start_time'] : "";
-        $selectedClass['end_time'] = isset($_POST['end_time']) ? $_POST['end_time'] : "";
+        $class['id'] = isset($_POST['id']) ? $_POST['id'] : "";
+        $class['room'] = isset($_POST['room']) ? $_POST['room'] : "";
+        $class['size'] = isset($_POST['size']) ? $_POST['size'] : "";
+        $class['day'] = isset($_POST['day']) ? $_POST['day'] : "";
+        $class['start_time'] = isset($_POST['start_time']) ? $_POST['start_time'] : "";
+        $class['end_time'] = isset($_POST['end_time']) ? $_POST['end_time'] : "";
 
-        if ($selectedClass['subject_id'] == "" || $selectedClass['name'] == "" || $selectedClass['room'] == "" || $selectedClass['size'] == "" || $selectedClass['day'] == "" || $selectedClass['start_time'] == "" || $selectedClass['end_time'] == "") {
+        if ($class['id'] == "" || $class['room'] == "" || $class['size'] == "" || $class['day'] == "" || $class['start_time'] == "" || $class['end_time'] == "") {
           echo '<div class="alert alert-danger">Pastikan semua kolom sudah diisi!</div>';
         } else {
-          if (editClass($selectedClass)) {
+          if (editClass($class)) {
             echo '<div class="alert alert-success">Sukses ubah data kelas!</div>';
             $data = getSingleClass($edit);
           } else echo '<div class="alert alert-danger">Gagal ubah data kelas!</div>';
@@ -124,8 +122,10 @@ if (!isset($_SESSION['user'])) {
                   <div class="mb-3">
                     <label for="subject" class="form-label">Kode</label>
                     <input type="text" name="subject" class="form-control" disabled value="<?= $data['subject_id'] ?>">
-                    <input type="hidden" name="subject_id" value="<?= $data['subject_id'] ?>">
                   </div>
+
+                  <!-- Hidden ID -->
+                  <input type="hidden" name="id" value="<?= $data['id'] ?>">
 
                   <div class="mb-3">
                     <label class="form-label">Jadwal</label>
@@ -151,7 +151,6 @@ if (!isset($_SESSION['user'])) {
                   <div class="mb-3">
                     <label class="form-label">Kelas</label>
                     <input disabled type="text" class="form-control" placeholder="X" value="<?= $data['name'] ?>">
-                    <input type="hidden" name="name" value="<?= $data['name'] ?>">
                   </div>
 
                   <div class="mb-3">

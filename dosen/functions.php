@@ -137,7 +137,7 @@ function addClass($class)
 
   if ($class != null) {
     try {
-      $sql = "INSERT INTO table_classes VALUES (NULL, :subject_id, :lecturer_id, :name, :room, :day, :start_time, :end_time, :size)";
+      $sql = "INSERT INTO table_classes VALUES (NULL, :subject_id, :lecturer_id, :name, :room, :day, :start_time, :end_time, :size, 1)";
       $stmt = $con->prepare($sql);
 
       $stmt->bindValue(':subject_id', $class['subject_id'], PDO::PARAM_STR);
@@ -171,6 +171,7 @@ function getAllClasses()
   FROM table_classes 
   LEFT JOIN table_subjects 
   ON table_subjects.code = table_classes.subject_id 
+  WHERE table_classes.is_active = 1
   ORDER BY table_classes.name
   EOSQL;
 
@@ -207,11 +208,10 @@ function editClass($data)
 
   if ($data != null) {
     try {
-      $sql = "UPDATE table_classes SET room = :room, day = :day, start_time = :start_time, end_time = :end_time, size = :size WHERE subject_id = :subject_id AND name = :name";
+      $sql = "UPDATE table_classes SET room = :room, day = :day, start_time = :start_time, end_time = :end_time, size = :size WHERE id = :id";
       $stmt = $con->prepare($sql);
 
-      $stmt->bindValue(':subject_id', $data['subject_id'], PDO::PARAM_STR);
-      $stmt->bindValue(':name', $data['name'], PDO::PARAM_STR);
+      $stmt->bindValue(':id', $data['id'], PDO::PARAM_STR);
       $stmt->bindValue(':room', $data['room'], PDO::PARAM_STR);
       $stmt->bindValue(':day', $data['day'], PDO::PARAM_STR);
       $stmt->bindValue(':start_time', $data['start_time'], PDO::PARAM_STR);
@@ -235,7 +235,8 @@ function deleteClass($id)
 
   if ($id != null) {
     try {
-      $sql = "DELETE FROM table_classes WHERE id = :id";
+      $sql = "UPDATE table_classes SET is_active = 0 WHERE id = :id";
+      // $sql = "DELETE FROM table_classes WHERE id = :id";
       $stmt = $con->prepare($sql);
       $stmt->bindValue(':id', $id, PDO::PARAM_INT);
 
@@ -265,10 +266,11 @@ function getAllStudents($lecturerId)
   table_classes.name AS class,
   table_subjects.name
   FROM table_class_users 
-  LEFT JOIN table_classes 
+  INNER JOIN table_classes 
   ON table_classes.id = table_class_users.class_id 
   AND table_classes.lecturer_id = :lecturerId
-  LEFT JOIN table_subjects 
+  AND table_classes.is_active = 1
+  INNER JOIN table_subjects 
   ON table_subjects.code = table_classes.subject_id
   ORDER BY table_classes.subject_id
   EOSQL;
