@@ -87,7 +87,7 @@ if (!isset($_SESSION['user'])) {
       $edit = isset($_GET['edit']) ? $_GET['edit'] : "";
       $data = [];
       if ($edit != "") {
-        $data = getSingleClass($edit);
+        $data = get_single_class($edit);
       }
 
       if (isset($_POST['edit_class'])) {
@@ -101,9 +101,9 @@ if (!isset($_SESSION['user'])) {
         if ($class['id'] == "" || $class['room'] == "" || $class['size'] == "" || $class['day'] == "" || $class['start_time'] == "" || $class['end_time'] == "") {
           echo '<div class="alert alert-danger">Pastikan semua kolom sudah diisi!</div>';
         } else {
-          if (editClass($class)) {
+          if (edit_class($class)) {
             echo '<div class="alert alert-success">Sukses ubah data kelas!</div>';
-            $data = getSingleClass($edit);
+            $data = get_single_class($edit);
           } else echo '<div class="alert alert-danger">Gagal ubah data kelas!</div>';
         }
       }

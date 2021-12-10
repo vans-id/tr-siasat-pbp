@@ -69,7 +69,7 @@ if (!isset($_SESSION['user'])) {
             <li class="breadcrumb-item">
               <!-- if breadcrumb is single--><span>Home</span>
             </li>
-            <li class="breadcrumb-item active"><span>Dashboard</span></li>
+            <li class="breadcrumb-item active"><span>Kelas</span></li>
           </ol>
         </nav>
       </div>
@@ -81,9 +81,9 @@ if (!isset($_SESSION['user'])) {
         <?php
         $delete = isset($_GET['delete']) ? $_GET['delete'] : "";
         if ($delete != "") {
-          $data = getSingleClass($delete);
+          $data = get_single_class($delete);
 
-          if (deleteClass($delete)) echo '<div class="alert alert-success">Sukses menghapus kelas!</div>';
+          if (delete_class($delete)) echo '<div class="alert alert-success">Sukses menghapus kelas!</div>';
           else echo '<div class="alert alert-danger">Gagal hapus kelas!</div>';
         }
         ?>
@@ -108,7 +108,7 @@ if (!isset($_SESSION['user'])) {
                 </thead>
                 <tbody>
                   <?php
-                  $classes = getAllClasses();
+                  $classes = get_all_classes();
                   foreach ($classes as $key => $val) {
                   ?>
                     <tr>

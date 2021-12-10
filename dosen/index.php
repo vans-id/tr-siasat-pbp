@@ -6,8 +6,8 @@ if (!isset($_SESSION['user'])) {
   header("Location: login.php");
 }
 
-$classes = countClasses($_SESSION['user']);
-$students = countStudents($_SESSION['user']);
+$classes = count_classes($_SESSION['user']);
+$students = count_students($_SESSION['user']);
 ?>
 
 <!DOCTYPE html>

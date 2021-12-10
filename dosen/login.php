@@ -30,7 +30,7 @@
               $user = $_POST['user'];
               $pass = $_POST['pass'];
 
-              $userId = authLogin($user, $pass);
+              $userId = auth_login($user, $pass);
 
               if ($userId != null) {
                 $_SESSION['user'] = $userId;

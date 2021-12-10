@@ -6,6 +6,17 @@ if (!isset($_SESSION['user'])) {
 }
 
 $students = [];
+if (isset($_POST['search_student'])) {
+  $nim = $_POST['nim'] ? $_POST['nim'] : "";
+
+  if ($nim == "") {
+    header("Location: mahasiswa.php");
+  } else {
+    $students = get_all_students($_SESSION['user'], $nim);
+  }
+} else {
+  $students = get_all_students($_SESSION['user']);
+}
 ?>
 
 <!DOCTYPE html>
@@ -72,7 +83,7 @@ $students = [];
             <li class="breadcrumb-item">
               <!-- if breadcrumb is single--><span>Home</span>
             </li>
-            <li class="breadcrumb-item active"><span>Dashboard</span></li>
+            <li class="breadcrumb-item active"><span>Mahasiswa</span></li>
           </ol>
         </nav>
       </div>
@@ -87,12 +98,28 @@ $students = [];
             echo '<div class="alert alert-danger">Input nilai tidak valid</div>';
           } else {
             // print_r($_POST);
-            if (editMark($_POST['id'], $_POST['mark'])) {
+            if (edit_mark($_POST['id'], $_POST['mark'])) {
               echo '<div class="alert alert-success">Sukses memberi nilai mahasiswa (' . $_POST['student_id'] . ')!</div>';
             } else echo '<div class="alert alert-danger">Gagal memberi nilai mahasiswa!</div>';
           }
         }
         ?>
+        <!-- ROW -->
+        <div class="row">
+          <div class="card mb-4">
+            <div class="card-body pb-0">
+              <form method="POST">
+                <div class="input-group mb-3">
+                  <input type="text" name="nim" class="form-control" placeholder="Cari nim mahasiswa">
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" name="search_student" type="submit" id="button-addon2">Cari</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
         <!-- ROW -->
         <div class="row">
           <div class="card mb-4">
@@ -113,8 +140,6 @@ $students = [];
                 </thead>
                 <tbody>
                   <?php
-                  $students = getAllStudents($_SESSION['user']);
-
                   foreach ($students as $key => $val) {
                   ?>
                     <tr>

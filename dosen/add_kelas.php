@@ -7,7 +7,7 @@ if (!isset($_SESSION['user'])) {
 
 if (isset($_POST['subject'])) {
   $subject = strval($_POST['subject']);
-  $response = getSubjectsByMajor($subject);
+  $response = get_subjects_by_major($subject);
   $i = 0;
   foreach ($response as $res) {
     echo "<option value=" . $res . ">$res</option>";
@@ -93,7 +93,6 @@ if (isset($_POST['subject'])) {
     <!-- END HEADER -->
 
     <div class="body flex-grow-1 px-3">
-
       <?php
       if (isset($_POST['add_class'])) {
         $newClass['subject_id'] = isset($_POST['subject_id']) ? $_POST['subject_id'] : "";
@@ -108,7 +107,7 @@ if (isset($_POST['subject'])) {
         if ($newClass['subject_id'] == "" || $newClass['name'] == "" || $newClass['room'] == "" || $newClass['size'] == "" || $newClass['day'] == "" || $newClass['start_time'] == "" || $newClass['end_time'] == "") {
           echo '<div class="alert alert-danger">Pastikan semua kolom sudah diisi!</div>';
         } else {
-          if (addClass($newClass)) echo '<div class="alert alert-success">Sukses tambah data kelas (' . $newClass['subject_id'] . ')!</div>';
+          if (add_class($newClass)) echo '<div class="alert alert-success">Sukses tambah data kelas (' . $newClass['subject_id'] . ')!</div>';
           else echo '<div class="alert alert-danger">Gagal tambah data mahasiswa!</div>';
         }
       }

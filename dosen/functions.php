@@ -3,7 +3,7 @@
 require_once "config.php";
 
 // LOGIN
-function authLogin($user = "", $pass = "")
+function auth_login($user = "", $pass = "")
 {
   global $con;
 
@@ -28,7 +28,7 @@ function authLogin($user = "", $pass = "")
 }
 
 // DASHBOARD
-function countClasses($lecturer_id)
+function count_classes($lecturer_id)
 {
   global $con;
 
@@ -49,7 +49,7 @@ function countClasses($lecturer_id)
   }
 }
 
-function countStudents($lecturer_id)
+function count_students($lecturer_id)
 {
   global $con;
 
@@ -75,7 +75,7 @@ function countStudents($lecturer_id)
 }
 
 // UBAH SUBJEK
-function getSubjectsByMajor($major = "")
+function get_subjects_by_major($major = "")
 {
   if ($major == null) {
     return "No data";
@@ -101,14 +101,14 @@ function getSubjectsByMajor($major = "")
       }
     }
   } catch (Exception $e) {
-    echo 'Error getSubjectsByMajor : ' . $e->getMessage();
+    echo 'Error get_subjects_by_major : ' . $e->getMessage();
   }
 
   return $result;
 }
 
 // CLASS
-function getSingleClass($id)
+function get_single_class($id)
 {
   global $con;
 
@@ -131,7 +131,7 @@ function getSingleClass($id)
   }
 }
 
-function addClass($class)
+function add_class($class)
 {
   global $con;
 
@@ -153,7 +153,7 @@ function addClass($class)
         return true;
       } else return false;
     } catch (Exception $e) {
-      echo 'Error addClass : ' . $e->getMessage();
+      echo 'Error add_class : ' . $e->getMessage();
       return false;
     }
   } else {
@@ -161,7 +161,7 @@ function addClass($class)
   }
 }
 
-function getAllClasses()
+function get_all_classes()
 {
   global $con;
 
@@ -202,7 +202,7 @@ function getAllClasses()
   return $hasil;
 }
 
-function editClass($data)
+function edit_class($data)
 {
   global $con;
 
@@ -221,7 +221,7 @@ function editClass($data)
       if ($stmt->execute()) return true;
       else return false;
     } catch (Exception $e) {
-      echo 'Error editClass : ' . $e->getMessage();
+      echo 'Error edit_class : ' . $e->getMessage();
       return false;
     }
   } else {
@@ -229,7 +229,7 @@ function editClass($data)
   }
 }
 
-function deleteClass($id)
+function delete_class($id)
 {
   global $con;
 
@@ -252,32 +252,36 @@ function deleteClass($id)
 }
 
 // MAHASISWA
-function getAllStudents($lecturerId)
+function get_all_students($lecturerId, $nim = "")
 {
   global $con;
 
+  $pattern = $nim . '%';
+
   $hasil = array();
-  $sql = <<<EOSQL
-  SELECT 
-  table_class_users.id, 
-  table_class_users.mark, 
-  table_class_users.student_id,
-  table_classes.subject_id, 
-  table_classes.name AS class,
-  table_subjects.name
-  FROM table_class_users 
-  INNER JOIN table_classes 
-  ON table_classes.id = table_class_users.class_id 
-  AND table_classes.lecturer_id = :lecturerId
-  AND table_classes.is_active = 1
-  INNER JOIN table_subjects 
-  ON table_subjects.code = table_classes.subject_id
-  ORDER BY table_classes.subject_id
-  EOSQL;
+  $sql = "SELECT 
+    table_class_users.id, 
+    table_class_users.mark, 
+    table_class_users.student_id,
+    table_classes.subject_id, 
+    table_classes.name AS class,
+    table_subjects.name
+    FROM table_class_users 
+    INNER JOIN table_classes 
+    ON table_classes.id = table_class_users.class_id 
+    AND table_classes.lecturer_id = :lecturerId
+    AND table_classes.is_active = 1
+    INNER JOIN table_subjects 
+    ON table_subjects.code = table_classes.subject_id";
+
+  if ($nim != "") {
+    $sql .= " WHERE table_class_users.student_id LIKE :pattern";
+  }
 
   try {
     $stmt = $con->prepare($sql);
     $stmt->bindValue(':lecturerId', $lecturerId, PDO::PARAM_STR);
+    if ($nim != "") $stmt->bindValue(':pattern', $pattern, PDO::PARAM_STR);
 
     if ($stmt->execute()) {
       $stmt->setFetchMode(PDO::FETCH_ASSOC);
@@ -303,7 +307,7 @@ function getAllStudents($lecturerId)
   return $hasil;
 }
 
-function editMark($id, $mark)
+function edit_mark($id, $mark)
 {
   global $con;
 
@@ -317,7 +321,7 @@ function editMark($id, $mark)
     if ($stmt->execute()) return true;
     else return false;
   } catch (Exception $e) {
-    echo 'Error editClass : ' . $e->getMessage();
+    echo 'Error edit_class : ' . $e->getMessage();
     return false;
   }
 }
