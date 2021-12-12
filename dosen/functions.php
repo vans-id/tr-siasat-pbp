@@ -84,7 +84,7 @@ function get_subjects_by_major($major = "")
 
   $result = [];
 
-  $sql = "SELECT code FROM table_subjects WHERE major = :major";
+  $sql = "SELECT code, name FROM table_subjects WHERE major = :major";
 
   try {
     $stmt = $con->prepare($sql);
@@ -96,7 +96,7 @@ function get_subjects_by_major($major = "")
 
       if ($rs != null) {
         foreach ($rs as $val) {
-          array_push($result, $val['code']);
+          array_push($result, $val['code'] . ' - ' . $val['name']);
         }
       }
     }

@@ -3,10 +3,13 @@ function fetchMajors(val) {
 
   switch (val) {
     case 'Fakultas Teknologi Informasi':
-      majors = ['67 - S1 Teknik Informatika'];
+      majors = ['67 - S1 Teknik Informatika', '68 - S1 Sistem Informasi'];
       break;
     case 'Fakultas Psikologi':
       majors = ['80 - S1 Psikologi'];
+      break;
+    case 'Fakultas Bahasa dan Seni':
+      majors = ['39 - S1 Sastra Inggris'];
       break;
 
     default:

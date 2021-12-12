@@ -128,6 +128,7 @@ if (isset($_POST['subject'])) {
                       <option selected disabled>Pilih Fakultas</option>
                       <option>Fakultas Teknologi Informasi</option>
                       <option>Fakultas Psikologi</option>
+                      <option>Fakultas Bahasa dan Seni</option>
                     </select>
                   </div>
 
