@@ -1,6 +1,6 @@
 <?php
 
-require_once "config.php";
+require_once("../config.php");
 
 // LOGIN
 function auth_login($user = "", $pass = "")
@@ -161,7 +161,7 @@ function add_class($class)
   }
 }
 
-function get_all_classes()
+function get_all_classes($lecturer_id)
 {
   global $con;
 
@@ -172,11 +172,13 @@ function get_all_classes()
   LEFT JOIN table_subjects 
   ON table_subjects.code = table_classes.subject_id 
   WHERE table_classes.is_active = 1
+  AND table_classes.lecturer_id = :lecturer_id
   ORDER BY table_classes.name
   EOSQL;
 
   try {
     $stmt = $con->prepare($sql);
+    $stmt->bindValue(':lecturer_id', $lecturer_id, PDO::PARAM_STR);
 
     if ($stmt->execute()) {
       $stmt->setFetchMode(PDO::FETCH_ASSOC);

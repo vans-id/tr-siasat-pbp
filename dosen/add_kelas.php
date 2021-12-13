@@ -28,10 +28,10 @@ if (isset($_POST['subject'])) {
   <title>Dashboard Admin - SIASAT</title>
 
   <!-- Vendors styles-->
-  <link rel="stylesheet" href="../vendors/simplebar/css/simplebar.css">
-  <link rel="stylesheet" href="../css/vendors/simplebar.css">
+  <link rel="stylesheet" href="vendors/simplebar/css/simplebar.css">
+  <link rel="stylesheet" href="css/vendors/simplebar.css">
   <!-- Main styles for this application-->
-  <link href="../css/style.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
   <!-- We use those styles to show code examples, you should remove them in your application.-->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/themes/prism.css">
   <link href="css/examples.css" rel="stylesheet">
@@ -115,8 +115,7 @@ if (isset($_POST['subject'])) {
       <div class="container-lg">
         <!-- ROW -->
         <div class="row">
-          <div class="col-md-3"></div>
-          <div class="col-md-6">
+          <div class="col">
             <div class="card mb-5">
               <div class="card-body pb-0">
                 <h4 class="mb-3">Tambah Kelas</h4>
@@ -199,7 +198,7 @@ if (isset($_POST['subject'])) {
     </footer>
   </div>
   <!-- CoreUI and necessary plugins-->
-  <script src="../vendors/simplebar/js/simplebar.min.js"></script>
+  <script src="vendors/simplebar/js/simplebar.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
   <!-- Custom Script -->

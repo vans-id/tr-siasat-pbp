@@ -9,10 +9,10 @@
   <title>Admin SIASAT - Masuk</title>
 
   <!-- Vendors styles-->
-  <link rel="stylesheet" href="../vendors/simplebar/css/simplebar.css">
-  <link rel="stylesheet" href="../css/vendors/simplebar.css">
+  <link rel="stylesheet" href="vendors/simplebar/css/simplebar.css">
+  <link rel="stylesheet" href="css/vendors/simplebar.css">
   <!-- Main styles for this application-->
-  <link href="../css/style.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
 </head>
 
 <body>
@@ -81,8 +81,8 @@
     </div>
   </div>
   <!-- CoreUI and necessary plugins-->
-  <script src="../vendors/@coreui/coreui/js/coreui.bundle.min.js"></script>
-  <script src="../vendors/simplebar/js/simplebar.min.js"></script>
+  <script src="vendors/@coreui/coreui/js/coreui.bundle.min.js"></script>
+  <script src="vendors/simplebar/js/simplebar.min.js"></script>
 </body>
 
 </html>
