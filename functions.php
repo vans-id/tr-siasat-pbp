@@ -354,18 +354,16 @@ function validate_class_users($code)
 
 function validate_schedule($class_id, $nim)
 {
-	global $con;
-
 	$student_classes = get_student_classes($nim);
 	$class = get_class_by_id($class_id);
 
-	$result = false;
-
 	foreach ($student_classes as $key => $val) {
-		$result = compare_schedule($val, $class);
+		if (compare_schedule($val, $class)) {
+			return true;
+		}
 	}
 
-	return $result;
+	return false;
 }
 
 // HELPERS
@@ -432,16 +430,21 @@ function get_class_by_id($class_id)
 
 function compare_schedule($main, $secondary)
 {
-	// TRUE = SALAH
-	if (strcmp($main['day'], $secondary['day']) != 0) {
-		return true;
-	}
+	if (strcmp($main['day'], $secondary['day']) == 0) {
 
-	if (
-		strtotime($main['start_time']) <= strtotime($secondary['start_time']) ||
-		strtotime($main['end_time']) >= strtotime($secondary['start_time'])
-	) {
-		return true;
+		if (
+			strtotime($secondary['start_time']) <= strtotime($main['start_time'])  &&
+			strtotime($secondary['end_time']) > strtotime($main['start_time'])
+		) {
+			return true;
+		}
+
+		if (
+			strtotime($secondary['start_time']) < strtotime($main['end_time'])  &&
+			strtotime($secondary['end_time']) > strtotime($main['end_time'])
+		) {
+			return true;
+		}
 	}
 
 	return false;
