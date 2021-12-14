@@ -24,26 +24,44 @@
 </head>
 
 <body>
-  
+
   <!-- ======= Header ======= -->
   <header id="header" class="fixed-top">
     <div class="container d-flex align-items-center">
 
       <h1 class="logo me-auto"><a href="index.php">Siasat</a></h1>
-      <!-- Uncomment below if you prefer to use an image logo -->
-      <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
 
       <nav id="navbar" class="navbar order-last order-lg-0">
         <ul>
-          <li><a class="active" href="index.php">Home</a></li>
+          <?php
+          require_once "functions.php";
+
+          if (isset($_SESSION['user'])) {
+          ?>
+            <li><a href="dashboard2.php">Dashboard</a></li>
+            <li><a href="Matkul.php">Mata Kuliah</a></li>
+            <li><a href="kst2.php">Kartu Studi</a></li>
+            <li><a href="transkrip2.php">Transkrip</a></li>
+          <?php
+          }
+          ?>
           <li><a href="beasiswa.php">Beasiswa</a></li>
           <li><a href="kalender.php">Calender</a></li>
+
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
-
-      <a href="login.php" class="get-started-btn">Login</a>
-
+      <?php
+      if (!isset($_SESSION['user'])) {
+      ?>
+        <a href="login.php" class="get-started-btn">Login</a>
+      <?php
+      } else {
+      ?>
+        <a href="logout.php" class="get-started-btn">Logout</a>
+      <?php
+      }
+      ?>
     </div>
   </header><!-- End Header -->
 
@@ -52,7 +70,7 @@
     <div class="container position-relative" data-aos="zoom-in" data-aos-delay="100">
       <h1>#UKSW500K</h1>
       <h2>Hanya dengan membayar Rp 500.000* <br> anda sudah bisa memulai pendidikan tinggi <br> di kampus Indonesia Mini</h2>
-      <a href="https://api.whatsapp.com/send/?phone=628112624500&text=Halo%2C+apakah+saya+bisa+mendapatkan+info+terkait+UKSW500K%3F+&app_absent=0" target="_blank"class="btn-get-started">Daftar Sekarang</a>
+      <a href="https://api.whatsapp.com/send/?phone=628112624500&text=Halo%2C+apakah+saya+bisa+mendapatkan+info+terkait+UKSW500K%3F+&app_absent=0" target="_blank" class="btn-get-started">Daftar Sekarang</a>
     </div>
   </section><!-- End Hero -->
 
@@ -60,7 +78,7 @@
 
     <!-- ======= About Section ======= -->
     <section id="about" class="about">
-      <div class="container" data-aos="fade-up" >
+      <div class="container" data-aos="fade-up">
 
         <div class="row">
           <div class="col-lg-6 order-1 order-lg-2" data-aos="fade-left" data-aos-delay="100">
@@ -118,8 +136,7 @@
             <div class="content">
               <h3>Kenapa pilih UKSW?</h3>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit
-                Asperiores dolores sed et. Tenetur quia eos. Autem tempore quibusdam vel necessitatibus optio ad corporis.
+                Mengingat bahwa Fakultas Keguruan dan Ilmu Pendidikan (FKIP) seharusnya merupakan bagian dari sebuah Universitas, maka Dewan Pengurus Yayasan Perguruan Tinggi Pendidikan Guru Kristen Indonesia memutuskan untuk menyelenggarakan sebuah Universitas Kristen yang pendiriannya diumumkan secara resmi pada tanggal 5 Desember 1959 Universitas ini kemudian bernama Universitas Kristen Satya Wacana (UKSW).
               </p>
               <div class="text-center">
                 <a href="about.php" class="more-btn">Learn More <i class="bx bx-chevron-right"></i></a>
@@ -178,7 +195,7 @@
                 </div>
 
                 <h3><a href="course-details2.php">S1 Teknik Informatika</a></h3>
-                <p>Et architecto provident deleniti facere repellat nobis iste. Id facere quia quae dolores dolorem tempore.</p>
+                <p>Bidang ilmu yang mempelajari teknologi komputer meliputi analisis matematis pengembangan, pengujian, evaluasi perangkat lunak (software), sistem operasi, dan kerja komputer.</p>
                 <div class="trainer d-flex justify-content-between align-items-center">
                   <div class="trainer-profile d-flex align-items-center">
                     <img src="assets/img/trainers/trainer-1.jpg" class="img-fluid" alt="">
@@ -202,7 +219,7 @@
                 </div>
 
                 <h3><a href="course-details2.php">S1 Akuntansi</a></h3>
-                <p>Et architecto provident deleniti facere repellat nobis iste. Id facere quia quae dolores dolorem tempore.</p>
+                <p>Bidang ilmu yang mempelajari teknologi komputer meliputi analisis matematis pengembangan, pengujian, evaluasi perangkat lunak (software), sistem operasi, dan kerja komputer.</p>
                 <div class="trainer d-flex justify-content-between align-items-center">
                   <div class="trainer-profile d-flex align-items-center">
                     <img src="assets/img/trainers/trainer-2.jpg" class="img-fluid" alt="">
@@ -226,7 +243,7 @@
                 </div>
 
                 <h3><a href="course-details2.php">S1 Psikologi</a></h3>
-                <p>Et architecto provident deleniti facere repellat nobis iste. Id facere quia quae dolores dolorem tempore.</p>
+                <p>Bidang ilmu yang mempelajari teknologi komputer meliputi analisis matematis pengembangan, pengujian, evaluasi perangkat lunak (software), sistem operasi, dan kerja komputer.</p>
                 <div class="trainer d-flex justify-content-between align-items-center">
                   <div class="trainer-profile d-flex align-items-center">
                     <img src="assets/img/trainers/trainer-3.jpg" class="img-fluid" alt="">

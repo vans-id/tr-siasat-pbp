@@ -22,62 +22,83 @@
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
 </head>
+
 <body>
-  
+
   <!-- ======= Header ======= -->
   <header id="header" class="fixed-top">
     <div class="container d-flex align-items-center">
 
       <h1 class="logo me-auto"><a href="index.php">Siasat</a></h1>
-      <!-- Uncomment below if you prefer to use an image logo -->
-      <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
 
       <nav id="navbar" class="navbar order-last order-lg-0">
         <ul>
-          <li><a href="index.php">Home</a></li>
+          <?php
+          require_once "functions.php";
+
+          if (isset($_SESSION['user'])) {
+          ?>
+            <li><a href="dashboard2.php">Dashboard</a></li>
+            <li><a href="Matkul.php">Mata Kuliah</a></li>
+            <li><a href="kst2.php">Kartu Studi</a></li>
+            <li><a href="transkrip2.php">Transkrip</a></li>
+          <?php
+          }
+          ?>
           <li><a href="beasiswa.php">Beasiswa</a></li>
-          <li><a class="active" href="kalender.php">Calender</a></li>
+          <li><a href="kalender.php" class="active">Calender</a></li>
+
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
-
-      <a href="login.php" class="get-started-btn">Login</a>
-
+      <?php
+      if (!isset($_SESSION['user'])) {
+      ?>
+        <a href="login.php" class="get-started-btn">Login</a>
+      <?php
+      } else {
+      ?>
+        <a href="logout.php" class="get-started-btn">Logout</a>
+      <?php
+      }
+      ?>
     </div>
   </header><!-- End Header -->
 
   <!-- ======= Hero Section ======= -->
   <br>
-    <br>
   <br>
+  <br>
+  <br>
+  <div class="hero-container" data-aos="fade-in">
     <br>
-    <div class="hero-container" data-aos="fade-in">
-    <br>  
-      <center><h1>Kalender akademik untuk Dosen/Staff, Mahasiswa</h1></center>  
-        <div class="container py-3">
-          <div class="row" data-aos="fade-up">
-            <div class="col-md-5 mt-5 card border-0" style="margin-left: 6.5%">
-              <div class="card wrapper card border-0">
-                  <img class="card-img-top " src="Dosen.png" alt="Kalender Dosen">
-                  <div class="card-body card border-0">
-                      <center><a href="Dosen.png" target="_blank" download="Kalender-Dosen.png"><button class="btn btn-primary btn-sm" style="margin-top: 10px; width: 40%">Download</button></center></a>
-                  </div>    
-                </div>
-              </div>
-              <div class="col-md-5 mt-5 card border-0">
-              <div class="card wrapper card border-0">
-                  <img class="card-img-top" src="Mahasiswa.png" alt="Kalender Mahasiswa" style="width: 100%">
-                  <div class="card border-0 ">
-                  <div class="card-body card border-0">
-                      <center><a href="Kalender.png" target="_blank" download="Kalender-Mahasiswa.png"><button class="btn btn-primary btn-sm" style="margin-top: 10px; width: 40%">Download</button></center></a>
-                  </div>    
-                  </div>    
-                </div>
+    <center>
+      <h1>Kalender akademik untuk Dosen/Staff, Mahasiswa</h1>
+    </center>
+    <div class="container py-3">
+      <div class="row" data-aos="fade-up">
+        <div class="col-md-5 mt-5 card border-0" style="margin-left: 6.5%">
+          <div class="card wrapper card border-0">
+            <img class="card-img-top " src="Dosen.png" alt="Kalender Dosen">
+            <div class="card-body card border-0">
+              <center><a href="Dosen.png" target="_blank" download="Kalender-Dosen.png"><button class="btn btn-primary btn-sm" style="margin-top: 10px; width: 40%">Download</button></center></a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-5 mt-5 card border-0">
+          <div class="card wrapper card border-0">
+            <img class="card-img-top" src="Mahasiswa.png" alt="Kalender Mahasiswa" style="width: 100%">
+            <div class="card border-0 ">
+              <div class="card-body card border-0">
+                <center><a href="Kalender.png" target="_blank" download="Kalender-Mahasiswa.png"><button class="btn btn-primary btn-sm" style="margin-top: 10px; width: 40%">Download</button></center></a>
               </div>
             </div>
           </div>
         </div>
-    </div>    
+      </div>
+    </div>
+  </div>
+  </div>
   <!-- ======= Footer ======= -->
   <footer id="footer">
 
@@ -144,7 +165,7 @@
         <a href="index.php" class="google-plus"><i class="bx bxl-skype"></i></a>
         <a href="index.php" class="linkedin"><i class="bx bxl-linkedin"></i></a>
       </div>
-    </div>  
+    </div>
   </footer><!-- End Footer -->
 
   <div id="preloader"></div>

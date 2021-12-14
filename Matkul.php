@@ -1,3 +1,10 @@
+<?php
+require_once "functions.php";
+
+if (!isset($_SESSION['user'])) {
+  header("Location: login.php");
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,33 +33,49 @@
 </head>
 
 <body>
-   <!-- ======= Header ======= -->
-   <header id="header" class="fixed-top">
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top">
     <div class="container d-flex align-items-center">
 
-      <h1 class="logo me-auto"><a href="index2.php">Siasat</a></h1>
-      <!-- Uncomment below if you prefer to use an image logo -->
-      <!-- <a href="index2.php" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+      <h1 class="logo me-auto"><a href="index.php">Siasat</a></h1>
 
       <nav id="navbar" class="navbar order-last order-lg-0">
         <ul>
-          <li><a href="dashboard2.php">Dashboard</a></li>
-          <li><a class="active" href="Matkul.php">Mata Kuliah</a></li>
-          <li><a href="kst2.php">Kartu Studi</a></li>
-          <li><a href="transkrip2.php">Transkrip</a></li>
-          <li><a href="kredit2.php">Kredit</a></li>
+          <?php
+          require_once "functions.php";
+
+          if (isset($_SESSION['user'])) {
+          ?>
+            <li><a href="dashboard2.php">Dashboard</a></li>
+            <li><a href="Matkul.php" class="active">Mata Kuliah</a></li>
+            <li><a href="kst2.php">Kartu Studi</a></li>
+            <li><a href="transkrip2.php">Transkrip</a></li>
+          <?php
+          }
+          ?>
+          <li><a href="beasiswa.php">Beasiswa</a></li>
+          <li><a href="kalender.php">Calender</a></li>
+
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
-
-      <a href="logout.php" class="get-started-btn">Logout</a>
-
+      <?php
+      if (!isset($_SESSION['user'])) {
+      ?>
+        <a href="login.php" class="get-started-btn">Login</a>
+      <?php
+      } else {
+      ?>
+        <a href="logout.php" class="get-started-btn">Logout</a>
+      <?php
+      }
+      ?>
     </div>
   </header><!-- End Header -->
 
-  <main id="main" data-aos="fade-in">
+  <main id="main">
     <!-- ======= Breadcrumbs ======= -->
-    <div class="breadcrumbs text-dark" >
+    <div class="breadcrumbs text-dark">
       <div class="container">
         <h2>Mata Kuliah</h2>
         <p>Semoga aktivitas belajarmu menyenangkan.</p>
@@ -60,13 +83,24 @@
     </div><!-- End Breadcrumbs -->
 
     <!-- Table -->
-    <div class="bg-light" >
-      <div class="container py-5" data-aos="fade-up" >
-        <div class="card p-4 table-responsive" data-aos="zoom-in" data-aos-delay="100">
-          <table class="table table-hover"  >
+    <div class="bg-light">
+
+      <div class="container py-5">
+        <div class="card p-4 table-responsive">
+          <?php
+          if (isset($_POST['add_class'])) {
+            if (on_user_register_class(
+              $_POST['class_id'],
+              $_POST['size'],
+              $_SESSION['user'],
+              $_POST['code'],
+            )) echo '<div class="alert alert-success">Sukses tambah kelas ke KST!</div>';
+            else echo '<div class="alert alert-danger">Gagal tambah kelas ke KST!</div>';
+          }
+          ?>
+          <table class="table table-hover">
             <thead>
               <tr>
-                <th scope="col">No</th>
                 <th scope="col">Kode</th>
                 <th scope="col">Matakuliah</th>
                 <th scope="col">Nama Dosen</th>
@@ -77,72 +111,36 @@
               </tr>
             </thead>
             <tbody>
-                <?php
-                  require_once "functions.php";
-                  
-                  if (!isset($_SESSION['user'])) {
-                    header("Location: login.php");
-                  } else {
-                    $nim = $_SESSION['user'];
-                    $no = 1;
-                    $angka = substr($_SESSION['user'],0,2);
-                    $query = mysqli_query($con, "SELECT table_classes.*,table_subjects.sks_a, table_subjects.name AS matkul FROM table_classes INNER JOIN table_subjects ON table_subjects.major LIKE '$angka%' AND table_subjects.code = table_classes.subject_id GROUP BY name");
-                    $a = mysqli_num_rows($query);
-  
-                    while ($a > 0) {
-                    $data = mysqli_fetch_array($query);
-                    $data['$a'] = $data['size'];
-                ?>
-                <form method="POST">
-                <tr>
-                  <th scope="row"><?php echo $no ?></th>
-                  <td><?php echo $data['subject_id']?><?php echo  $data['name']?></td>
-                  <td><?php echo $data['matkul'].' ('?><?php echo $data['sks_a'].')'?></td>
-                  <td>
-                  <?php  
-                  if($data['lecturer_id'] == 672819){
-                  echo 'Vita Tantriyati';
-                  }elseif($data['lecturer_id'] == 627128){
-                  echo 'Yeremia';
-                  }else{
-                  echo 'Ineke Pakereng';
-                  }     
-                  ?>  
-                  </td>
-                  <td><?php echo $data['room']?></td>
-                  <td><?php echo $data['day'].' '?><?php echo $data['start_time'].'-'?><?php echo $data['end_time']?></td>
-                  <?php
-                   UPDATE table_classes SET size = size-1 WHERE subject_id =: subject_id
-                  if(isset($_POST['kurang'])){
-                    $data['$a']--;
-
-                    }
-                  ?>
-                  <td><?php echo $data['$a']?></td>
-                  <td><button name="kurang" type="submit" class="btn btn-primary btn-sm">AMBIL</button></td>
-                </tr>
-                </form>
-
               <?php
-                $no++;
-                $a--;
-                }
-              }  
-            ?>
+              $classes = get_available_classes_by_id($_SESSION['user']);
 
-            <?php
-            $time=$data['start_time'];
-              if(strtotime($time)<=strtotime('00:03:00')) {
-               //do some work
-              } else {
-               //do something
+              foreach ($classes as $key => $val) {
+              ?>
+                <tr>
+                  <td><?= $val['subject_id'] ?><?= $val['name'] ?></td>
+                  <td><?= $val['matkul'] . ' ' ?><?= $val['name'] ?></td>
+                  <td>
+                    <?= $val['lecturer'] ?>
+                  </td>
+                  <td><?= $val['room'] ?></td>
+                  <td><?= $val['day'] . ', ' ?><?= $val['start_time'] . ' - ' ?><?= $val['end_time'] ?></td>
+                  <td><?= $val['size'] ?></td>
+                  <td>
+                    <form method="POST">
+                      <input name="class_id" type="hidden" value="<?= $val['id'] ?>">
+                      <input name="size" type="hidden" value="<?= $val['size'] ?>">
+                      <input name="code" type="hidden" value="<?= $val['subject_id'] ?>">
+                      <button name="add_class" type="submit" class="btn btn-primary btn-sm">AMBIL</button>
+                    </form>
+                  </td>
+                </tr>
+              <?php
               }
-            ?>
-
+              ?>
             </tbody>
           </table>
         </div>
-        
+
       </div>
     </div>
     <!-- End Table -->
@@ -170,32 +168,32 @@
           <div class="col-lg-3 col-md-6 footer-links">
             <h4>Useful Links</h4>
             <ul>
-              <li><i class="bx bx-chevron-right"></i> <a href="index2.php">Home</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="index2.php">Tentang</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="index2.php">Jurusan</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="index2.php">Syarat dan Ketentuan</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="index2.php">Kebijakan Privasi</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="index.php">Home</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="index.php">Tentang</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="index.php">Jurusan</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="index.php">Syarat dan Ketentuan</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="index.php">Kebijakan Privasi</a></li>
             </ul>
           </div>
 
           <div class="col-lg-3 col-md-6 footer-links">
             <h4>Informasi</h4>
             <ul>
-              <li><i class="bx bx-chevron-right"></i> <a href="index2.php">Info Akademik</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="index2.php">Tentang UKSW</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="index2.php">Akademik</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="index2.php">Kemahasiswaan</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="index2.php">Perpustakaan</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="index.php">Info Akademik</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="index.php">Tentang UKSW</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="index.php">Akademik</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="index.php">Kemahasiswaan</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="index.php">Perpustakaan</a></li>
             </ul>
           </div>
 
           <div class="col-lg-3 col-md-6 footer-links">
             <h4>Lain Lain</h4>
             <ul>
-              <li><i class="bx bx-chevron-right"></i> <a href="index2.php">Lembaga penjamin mutu</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="index2.php">Unduhan</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="index2.php">UKSW Tour</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="index2.php">Hubungan Internasional</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="index.php">Lembaga penjamin mutu</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="index.php">Unduhan</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="index.php">UKSW Tour</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="index.php">Hubungan Internasional</a></li>
             </ul>
           </div>
 
@@ -211,11 +209,11 @@
         </div>
       </div>
       <div class="social-links text-center text-md-right pt-3 pt-md-0">
-        <a href="index2.php" class="twitter"><i class="bx bxl-twitter"></i></a>
-        <a href="index2.php" class="facebook"><i class="bx bxl-facebook"></i></a>
-        <a href="index2.php" class="instagram"><i class="bx bxl-instagram"></i></a>
-        <a href="index2.php" class="google-plus"><i class="bx bxl-skype"></i></a>
-        <a href="index2.php" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+        <a href="index.php" class="twitter"><i class="bx bxl-twitter"></i></a>
+        <a href="index.php" class="facebook"><i class="bx bxl-facebook"></i></a>
+        <a href="index.php" class="instagram"><i class="bx bxl-instagram"></i></a>
+        <a href="index.php" class="google-plus"><i class="bx bxl-skype"></i></a>
+        <a href="index.php" class="linkedin"><i class="bx bxl-linkedin"></i></a>
       </div>
     </div>
   </footer><!-- End Footer -->

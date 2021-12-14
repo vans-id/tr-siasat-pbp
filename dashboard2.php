@@ -27,19 +27,17 @@
 
 <body>
   <?php
-    require_once "functions.php";
+  require_once "functions.php";
 
-      if (!isset($_SESSION['user'])) {
-        header("Location: login.php");
-      } else {
-  echo '    
+  if (!isset($_SESSION['user'])) {
+    header("Location: login.php");
+  } else {
+    echo '    
   <!-- ======= Header ======= -->
   <header id="header" class="fixed-top">
     <div class="container d-flex align-items-center">
 
-      <h1 class="logo me-auto"><a href="index2.php">Siasat</a></h1>
-      <!-- Uncomment below if you prefer to use an image logo -->
-      <!-- <a href="index2.php" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+      <h1 class="logo me-auto"><a href="index.php">Siasat</a></h1>
 
       <nav id="navbar" class="navbar order-last order-lg-0">
         <ul>
@@ -47,7 +45,8 @@
           <li><a href="Matkul.php">Mata Kuliah</a></li>
           <li><a href="kst2.php">Kartu Studi</a></li>
           <li><a href="transkrip2.php">Transkrip</a></li>
-          <li><a href="kredit2.php">Kredit</a></li>
+          <li><a href="beasiswa.php">Beasiswa</a></li>
+          <li><a href="kalender.php">Calender</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
@@ -61,7 +60,7 @@
     <!-- ======= Breadcrumbs ======= -->
     <div class="breadcrumbs text-dark" data-aos="fade-in">
       <div class="container">
-        <h2>Selamat datang '.$_SESSION['data']['nama'].'</h2>
+        <h2>Selamat datang ' . $_SESSION['data']['name'] . '</h2>
         <p>Semoga aktivitas belajarmu menyenangkan.</p>
 
         <div class="card mt-5">
@@ -71,23 +70,23 @@
               <tbody>
                 <tr>
                   <th scope="row">Nama</th>
-                  <td>'.$_SESSION['data']['nama'].'</td>
+                  <td>' . $_SESSION['data']['name'] . '</td>
                 </tr>
                 <tr>
                   <th scope="row">NIM</th>
-                  <td>'.$_SESSION['user'].'</td>
+                  <td>' . $_SESSION['user'] . '</td>
                 </tr>
                 <tr>
                   <th scope="row">Alamat</th>
-                  <td colspan="2">'.$_SESSION['data']['alamat'].'</td>
+                  <td colspan="2">' . $_SESSION['data']['address'] . '</td>
                 </tr>
                 <tr>
                   <th scope="row">Asal</th>
-                  <td colspan="2">'.$_SESSION['data']['asal'].'</td>
+                  <td colspan="2">' . $_SESSION['data']['origin'] . '</td>
                 </tr>
                 <tr>
                   <th scope="row">No Hp</th>
-                  <td colspan="2">'.$_SESSION['data']['noHp'].'</td>
+                  <td colspan="2">' . $_SESSION['data']['contact'] . '</td>
                 </tr>
               </tbody>
             </table>
@@ -119,32 +118,32 @@
           <div class="col-lg-3 col-md-6 footer-links">
             <h4>Useful Links</h4>
             <ul>
-              <li><i class="bx bx-chevron-right"></i> <a href="index2.php">Home</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="index2.php">Tentang</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="index2.php">Jurusan</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="index2.php">Syarat dan Ketentuan</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="index2.php">Kebijakan Privasi</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="index.php">Home</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="index.php">Tentang</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="index.php">Jurusan</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="index.php">Syarat dan Ketentuan</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="index.php">Kebijakan Privasi</a></li>
             </ul>
           </div>
 
           <div class="col-lg-3 col-md-6 footer-links">
             <h4>Informasi</h4>
             <ul>
-              <li><i class="bx bx-chevron-right"></i> <a href="index2.php">Info Akademik</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="index2.php">Tentang UKSW</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="index2.php">Akademik</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="index2.php">Kemahasiswaan</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="index2.php">Perpustakaan</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="index.php">Info Akademik</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="index.php">Tentang UKSW</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="index.php">Akademik</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="index.php">Kemahasiswaan</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="index.php">Perpustakaan</a></li>
             </ul>
           </div>
 
           <div class="col-lg-3 col-md-6 footer-links">
             <h4>Lain Lain</h4>
             <ul>
-              <li><i class="bx bx-chevron-right"></i> <a href="index2.php">Lembaga penjamin mutu</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="index2.php">Unduhan</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="index2.php">UKSW Tour</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="index2.php">Hubungan Internasional</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="index.php">Lembaga penjamin mutu</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="index.php">Unduhan</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="index.php">UKSW Tour</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="index.php">Hubungan Internasional</a></li>
             </ul>
           </div>
 
@@ -160,19 +159,19 @@
         </div>
       </div>
       <div class="social-links text-center text-md-right pt-3 pt-md-0">
-        <a href="index2.php" class="twitter"><i class="bx bxl-twitter"></i></a>
-        <a href="index2.php" class="facebook"><i class="bx bxl-facebook"></i></a>
-        <a href="index2.php" class="instagram"><i class="bx bxl-instagram"></i></a>
-        <a href="index2.php" class="google-plus"><i class="bx bxl-skype"></i></a>
-        <a href="index2.php" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+        <a href="index.php" class="twitter"><i class="bx bxl-twitter"></i></a>
+        <a href="index.php" class="facebook"><i class="bx bxl-facebook"></i></a>
+        <a href="index.php" class="instagram"><i class="bx bxl-instagram"></i></a>
+        <a href="index.php" class="google-plus"><i class="bx bxl-skype"></i></a>
+        <a href="index.php" class="linkedin"><i class="bx bxl-linkedin"></i></a>
       </div>
     </div>
   </footer><!-- End Footer -->
 
   <div id="preloader"></div>
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>';
-}  
-?>
+  }
+  ?>
 
   <!-- Vendor JS Files -->
   <script src="assets/vendor/purecounter/purecounter.js"></script>

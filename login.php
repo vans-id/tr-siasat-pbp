@@ -25,32 +25,32 @@
   <link href="assets/css/style.css" rel="stylesheet">
 </head>
 <script type="text/javascript" src="libs/jquery.form.js">
-  angka = document.querySelector(".third").addEventListener("click", function(){
-  Swal.fire("success");});
-</script>    
+  angka = document.querySelector(".third").addEventListener("click", function() {
+    Swal.fire("success");
+  });
+</script>
+
 <body>
+  <?php
+  require_once "functions.php";
 
-<?php
-require_once "functions.php";
-
-if (isset($_SESSION['user'])) {
+  if (isset($_SESSION['user'])) {
     header("Location: dashboard2.php");
-} else {
-    if(isset($_POST['login'])){
-        $nim = $_POST['nim'];
-        $pass = $_POST['pass'];
+  } else {
+    if (isset($_POST['login'])) {
+      $nim = $_POST['nim'];
+      $pass = $_POST['pass'];
 
-        if(check_login($nim, $pass)) {
+      if (check_login($nim, $pass)) {
         $_SESSION['user'] = $nim;
-        $_SESSION['data'] = select_data($nim);
-              header("Refresh: 2; url=dashboard2.php");
-            } else {
-              
-            } 
-        }
-   echo '
+        $_SESSION['data'] = get_user_by_nim($nim);
+        header("Refresh: 2; url=dashboard2.php");
+      } else {
+        header("Location: login.php");
+      }
+    }
+    echo '
    <!-- ======= Header ======= -->
-   <form method="post">
    <header id="header" class="fixed-top">
     <div class="container d-flex align-items-center">
 
@@ -74,7 +74,7 @@ if (isset($_SESSION['user'])) {
 
   <main id="main">
     <!-- ======= Breadcrumbs ======= -->
-    <div class="breadcrumbs bg-light text-dark" data-aos="fade-in">
+    <div class="breadcrumbs bg-light text-dark">
       <div class="container">
         <div class="row">
           <div class="col-md-4"></div>
@@ -82,7 +82,7 @@ if (isset($_SESSION['user'])) {
             <div class="card mt-5" >
               <div class="card-body p-4">
                 <h5>Masuk Akun Kamu</h5>
-                <form class="mt-4">
+                <form class="mt-4" method="POST">
                   <input type="text" class="form-control mt-3" name="nim" id="nim" placeholder="Masukain NIM">
                   <input type="password" class="form-control mt-3" name = "pass" id="password" placeholder="Password">
                   <button type="submit" class="btn btn-primary mt-3 third" name="login">Submit</button>
@@ -170,7 +170,8 @@ if (isset($_SESSION['user'])) {
   <div id="preloader"></div>
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
   </form>
-  ';}
+  ';
+  }
   ?>
 
   <!-- Vendor JS Files -->
