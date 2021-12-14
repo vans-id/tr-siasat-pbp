@@ -7,7 +7,7 @@ function auth_login($user = "", $pass = "")
 {
   global $con;
 
-  $sql = "SELECT nim FROM table_users WHERE nim = :user AND password = :pass AND role = 2";
+  $sql = "SELECT nim, name FROM table_users WHERE nim = :user AND password = :pass AND role = 2";
 
   try {
     $stmt = $con->prepare($sql);
@@ -19,7 +19,7 @@ function auth_login($user = "", $pass = "")
       $rs = $stmt->fetch();
 
       if ($rs != null) {
-        return $rs['nim'];
+        return $rs;
       }
     }
   } catch (Exception $e) {
@@ -32,7 +32,8 @@ function count_classes($lecturer_id)
 {
   global $con;
 
-  $sql = "SELECT count(*) from table_classes where lecturer_id = :lecturer_id";
+  $sql = "SELECT count(*) FROM table_classes 
+  WHERE lecturer_id = :lecturer_id AND is_active = 1";
 
   try {
     $stmt = $con->prepare($sql);
@@ -55,8 +56,9 @@ function count_students($lecturer_id)
 
   $sql = "SELECT COUNT(*)
   FROM table_class_users 
-  LEFT JOIN table_classes 
+  INNER JOIN table_classes 
   ON table_classes.id = table_class_users.class_id 
+  AND table_classes.is_active = 1
   AND table_classes.lecturer_id = :lecturer_id";
 
   try {

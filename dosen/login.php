@@ -30,10 +30,11 @@
               $user = $_POST['user'];
               $pass = $_POST['pass'];
 
-              $userId = auth_login($user, $pass);
+              $user = auth_login($user, $pass);
 
-              if ($userId != null) {
-                $_SESSION['user'] = $userId;
+              if ($user != null) {
+                $_SESSION['user'] = $user['nim'];
+                $_SESSION['name'] = $user['name'];
                 header("location: index.php");
               } else {
                 echo '<div class="alert alert-danger">Username/Password salah!</div>';

@@ -83,8 +83,10 @@ $students = count_students($_SESSION['user']);
 
     <div class="body flex-grow-1 px-3">
       <div class="container-lg">
+        <div>Selamat Datang,</div>
+        <h3 class="mt-2"><?= $_SESSION['name'] ?></h3>
         <!-- ROW -->
-        <div class="row">
+        <div class="row mt-4">
           <div class="col-sm-6 col-lg-4">
             <div class="card mb-4 text-white bg-primary">
               <div class="card-body pb-0 d-flex justify-content-between align-items-start">
