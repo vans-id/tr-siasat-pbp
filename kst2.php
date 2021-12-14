@@ -88,6 +88,18 @@ if (!isset($_SESSION['user'])) {
       <div class="container py-3">
         <div class="row" data-aos="fade-up">
           <?php
+          $classes = [];
+          // HANDLE POST
+          if (isset($_POST['delete_schedule'])) {
+            if (delete_schedule(
+              $_POST['class_id'],
+              $_POST['class_user_id'],
+            )) {
+              echo '<div class="alert alert-success">Sukses hapus kelas dari KST</div>';
+              $classes = get_student_schedule($_SESSION['user']);
+            } else echo '<div class="alert alert-danger">Gagal hapus kelas dari KST!</div>';
+          }
+
           $classes = get_student_schedule($_SESSION['user']);
 
           foreach ($classes as $key => $val) {
@@ -112,13 +124,22 @@ if (!isset($_SESSION['user'])) {
                   </li>
                   <li class="list-group-item">Ruangan: <?= $val['room'] ?></li>
                 </ul>
-                <div class="card-body">
-                  <span href="#" class="card-link text-muted">
-                    SKS A: <?= $val['sks_a'] ?>
-                  </span>
-                  <span href="#" class="card-link text-muted">
-                    SKS B: <?= $val['sks_b'] ?>
-                  </span>
+                <div class="card-body d-flex justify-content-between align-items-center">
+                  <div>
+                    <span class="card-link text-muted">
+                      SKS A: <?= $val['sks_a'] ?>
+                    </span>
+                    <span class="card-link text-muted">
+                      SKS B: <?= $val['sks_b'] ?>
+                    </span>
+                  </div>
+                  <form method="POST">
+                    <input type="hidden" name="class_id" value="<?= $val['id'] ?>">
+                    <input type="hidden" name="class_user_id" value="<?= $val['class_user_id'] ?>">
+                    <button type="submit" class="card-link btn btn-outline-primary" name="delete_schedule">
+                      Hapus
+                    </button>
+                  </form>
                 </div>
               </div>
             </div>

@@ -162,6 +162,7 @@ function on_user_register_class($class_id, $size, $nim, $code)
 	}
 }
 
+// KST
 function get_student_schedule($nim)
 {
 	global $con;
@@ -173,6 +174,7 @@ function get_student_schedule($nim)
 	table_subjects.sks_a, 
 	table_subjects.sks_b, 
 	table_class_users.status, 
+	table_class_users.id AS class_user_id,
 	table_users.name AS lecturer
 	FROM table_classes
 	INNER JOIN table_class_users
@@ -208,6 +210,106 @@ function get_student_schedule($nim)
 					$hasil[$i]['sks_b'] = $val['sks_b'];
 					$hasil[$i]['status'] = $val['status'] == 'B' ? 'B' : 'U';
 					$hasil[$i]['lecturer'] = $val['lecturer'];
+					$hasil[$i]['class_user_id'] = $val['class_user_id'];
+					$i++;
+				}
+			}
+		}
+	} catch (Exception $e) {
+		echo 'Error validateIsClassExists : ' . $e->getMessage();
+	}
+
+	return $hasil;
+}
+
+function delete_schedule($class_id, $class_user_id)
+{
+	global $con;
+
+	// VALIDATION
+	if ($class_id == null || $class_user_id == null) {
+		return false;
+	}
+
+	try {
+		// GET CLASS SIZE
+		$size = "SELECT size FROM table_classes WHERE id = :class_id LIMIT 1";
+		$stmt_size = $con->prepare($size);
+		$stmt_size->bindValue(':class_id', $class_id, PDO::PARAM_INT);
+
+		$newSize = 0;
+
+		if ($stmt_size->execute()) {
+			$stmt_size->setFetchMode(PDO::FETCH_ASSOC);
+			$rs = $stmt_size->fetch();
+
+			if ($rs != null) {
+				$newSize = $rs['size'] + 1;
+			}
+		}
+
+		// UPDATE CLASS SIZE
+		$update = "UPDATE table_classes SET size = :newSize WHERE id = :class_id";
+
+		$stmt_update = $con->prepare($update);
+
+		$stmt_update->bindValue(':newSize', $newSize, PDO::PARAM_INT);
+		$stmt_update->bindValue(':class_id', $class_id, PDO::PARAM_INT);
+
+		// DELETE CLASS-USER
+		$delete = "DELETE FROM table_class_users WHERE id = :class_user_id";
+		$stmt_delete = $con->prepare($delete);
+		$stmt_delete->bindValue(':class_user_id', $class_user_id, PDO::PARAM_INT);
+
+		if ($stmt_update->execute() && $stmt_delete->execute()) return true;
+		else return false;
+	} catch (Exception $e) {
+		echo 'Error delete_data : ' . $e->getMessage();
+		return false;
+	}
+}
+
+// TRANSKRIP
+function get_student_marks($nim)
+{
+	global $con;
+	$hasil = array();
+
+	$sql = "SELECT 
+	table_classes.name,
+	table_subjects.code,
+	table_subjects.sks_a,
+  table_subjects.name AS lecture,
+	table_class_users.mark,
+  table_class_users.year_taken
+	FROM table_classes
+	INNER JOIN table_class_users
+	ON table_class_users.student_id = :nim
+  AND table_classes.id = table_class_users.class_id
+  INNER JOIN table_subjects
+	ON table_subjects.code = table_classes.subject_id
+  INNER JOIN table_users
+	ON table_users.nim = table_classes.lecturer_id
+	WHERE table_classes.is_active = 0";
+
+	try {
+		$stmt = $con->prepare($sql);
+		$stmt->bindValue(':nim', $nim, PDO::PARAM_STR);
+
+		if ($stmt->execute()) {
+			$stmt->setFetchMode(PDO::FETCH_ASSOC);
+			$rs = $stmt->fetchAll();
+
+			if ($rs != null) {
+				$i = 0;
+				foreach ($rs as $val) {
+					$hasil[$i]['code'] = $val['code'];
+					$hasil[$i]['name'] = $val['name'];
+					$hasil[$i]['lecture'] = $val['lecture'];
+					$hasil[$i]['sks_a'] = $val['sks_a'];
+					$hasil[$i]['mark'] = $val['mark'] ? $val['mark'] : 'N/A';
+					$hasil[$i]['credit'] = get_credit_by_mark($val['mark'], $val['sks_a']);
+					$hasil[$i]['year_taken'] = $val['year_taken'];
 					$i++;
 				}
 			}
@@ -343,4 +445,33 @@ function compare_schedule($main, $secondary)
 	}
 
 	return false;
+}
+
+function get_credit_by_mark($mark, $sks)
+{
+	switch ($mark) {
+		case 'A':
+			return $sks * 4;
+			break;
+		case 'AB':
+			return ceil($sks * 3.5);
+			break;
+		case 'B':
+			return $sks * 3;
+			break;
+		case 'BC':
+			return ceil($sks * 2.5);
+			break;
+		case 'C':
+			return $sks * 2;
+			break;
+		case 'CD':
+			return ceil($sks * 1.5);
+			break;
+		case 'D':
+			return $sks * 1;
+			break;
+		default:
+			return 0;
+	}
 }

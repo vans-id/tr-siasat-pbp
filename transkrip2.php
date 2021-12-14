@@ -1,3 +1,12 @@
+<?php
+
+require_once "functions.php";
+
+if (!isset($_SESSION['user'])) {
+  header("Location: login.php");
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -94,28 +103,22 @@
             </thead>
             <tbody>
               <?php
-              require_once "functions.php";
+              $marks = get_student_marks($_SESSION['user']);
+              $no = 1;
 
-              if (!isset($_SESSION['user'])) {
-                header("Location: login.php");
-              } else {
-                $nim = $_SESSION['user'];
-                $no = 1;
-                $query = mysqli_query($con, 'SELECT * FROM tabel_transkip WHERE nim = ' . $_SESSION['user']);
-                while ($data = mysqli_fetch_array($query)) {
+              foreach ($marks as $key => $val) {
               ?>
-                  <tr>
-                    <th scope="row"><?php echo $no ?></th>
-                    <td><?php echo $data['Kode'] ?></td>
-                    <td><?php echo $data['Matkul'] ?></td>
-                    <td><?php echo $data['SKS'] ?></td>
-                    <td><?php echo $data['Nilai'] ?></td>
-                    <td><?php echo $data['AK'] ?></td>
-                    <td><?php echo $data['TahunAmbil'] ?></td>
-                  </tr>
+                <tr>
+                  <th scope="row"><?= $no ?></th>
+                  <td><?= $val['code'] ?></td>
+                  <td><?= $val['lecture'] ?></td>
+                  <td><?= $val['sks_a'] ?></td>
+                  <td><?= $val['mark'] ?></td>
+                  <td><?= $val['credit'] ?></td>
+                  <td><?= $val['year_taken'] ?></td>
+                </tr>
               <?php
-                  $no++;
-                }
+                $no++;
               }
               ?>
             </tbody>

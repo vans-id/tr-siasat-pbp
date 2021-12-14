@@ -100,6 +100,7 @@ if (isset($_POST['search_student'])) {
             // print_r($_POST);
             if (edit_mark($_POST['id'], $_POST['mark'])) {
               echo '<div class="alert alert-success">Sukses memberi nilai mahasiswa (' . $_POST['student_id'] . ')!</div>';
+              $students = get_all_students($_SESSION['user']);
             } else echo '<div class="alert alert-danger">Gagal memberi nilai mahasiswa!</div>';
           }
         }
