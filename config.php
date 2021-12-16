@@ -12,20 +12,9 @@ $configdb['host'] = "localhost";
 $configdb['user'] = "root";
 $configdb['pass'] = "";
 
-// AWS ENV
-// $dbhost = 'aa1xc1xvrpopcdk.cwkpxkr7hgts.ap-southeast-1.rds.amazonaws.com';
-// $dbport = '3306';
-// $dbname = 'db_tr';
-// $charset = 'utf8';
-
-// $dsn = "mysql:host={$dbhost};port={$dbport};dbname={$dbname};charset={$charset}";
-// $username = 'root';
-// $password = 'test1234';
-
 $con;
 
 try {
-  // $con = new PDO($dsn, $username, $password);
   $con = new PDO("mysql:host=" . $configdb['host'] . ";dbname=" . $configdb['db'] . ";charset=utf8;", $configdb['user'], $configdb['pass']);
 
   if ($con) {
